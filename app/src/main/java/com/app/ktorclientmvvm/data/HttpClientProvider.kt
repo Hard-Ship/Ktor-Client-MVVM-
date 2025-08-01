@@ -3,6 +3,7 @@ package com.app.ktorclientmvvm.data
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -18,6 +19,10 @@ object HttpClientProvider {
                     isLenient = true
                 }
             )
+        }
+
+        defaultRequest {
+            url("https://dummyjson.com/")
         }
 
     }
