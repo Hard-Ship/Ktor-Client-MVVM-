@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.ktorclientmvvm.data.ApiService
 import com.app.ktorclientmvvm.data.Todo
 import com.app.ktorclientmvvm.data.TodoRepository
+import com.app.ktorclientmvvm.util.showToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -67,6 +68,38 @@ class TodoViewModel : ViewModel() {
                         todoList = currentTodos.plus(it)
                     )
                 )
+                showToast("POST request Successful")
+            }.onFailure { e->
+                updateTodoScreenUiState(
+                    TodoScreenUiState.Error(
+                        message = e.message ?: "Error"
+                    )
+                )
+            }
+        }
+    }
+
+    fun onToggleCompleted(isCompleted : Boolean,todo: Todo) {
+        viewModelScope.launch {
+
+            val currentTodos = (_uiState.value as TodoScreenUiState.Success).todoList.toMutableList()
+            val response = repository.updateTodo(todo.copy(completed = isCompleted))
+
+            response.onSuccess { updatedTodo->
+
+                val updatedTodos = currentTodos.map { todo ->
+                    if (todo.id == updatedTodo.id) {
+                        todo.copy(completed = updatedTodo.completed)
+                    } else {
+                        todo
+                    }
+                }
+                updateTodoScreenUiState(
+                    TodoScreenUiState.Success(
+                        todoList = updatedTodos
+                    )
+                )
+                showToast("PUT request Successful")
             }.onFailure { e->
                 updateTodoScreenUiState(
                     TodoScreenUiState.Error(

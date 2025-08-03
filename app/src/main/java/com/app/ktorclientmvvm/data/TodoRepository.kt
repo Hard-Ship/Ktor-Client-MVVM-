@@ -13,4 +13,8 @@ class TodoRepository(
         return apiService.addTodo(todo)
     }
 
+    suspend fun updateTodo(todo: Todo): Result<Todo> {
+        return apiService.updateTodo(todo)
+    }
+
 }
