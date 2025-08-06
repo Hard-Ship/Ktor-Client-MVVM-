@@ -1,6 +1,7 @@
 package com.app.ktorclientmvvm.data
 
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -83,6 +84,27 @@ class ApiService {
                 )
             }
 
+
+            return if (response.status.isSuccess()) {
+                Result.success(response.body<Todo>())
+            } else {
+                Result.failure(Exception("Server returned status: ${response.status}\n Message : ${response.bodyAsText()}"))
+            }
+
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+
+
+    }
+
+    // DELETE
+    @OptIn(InternalAPI::class)
+    suspend fun deleteTodo(
+        todo: Todo
+    ): Result<Todo> {
+        try {
+            val response = HttpClientProvider.client.delete("todos/${todo.id}")
 
             return if (response.status.isSuccess()) {
                 Result.success(response.body<Todo>())

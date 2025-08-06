@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import com.app.ktorclientmvvm.data.Todo
 fun TodoItem(
     todo: Todo,
     onToggle: (Boolean) -> Unit,
+    onDelete: (Todo) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val contentAlpha = if (todo.completed) 0.5f else 1.0f
@@ -97,6 +99,20 @@ fun TodoItem(
                     .weight(1f)
                     .alpha(contentAlpha)
             )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Delete Button
+            IconButton(
+                onClick = { onDelete(todo) },
+                modifier = Modifier.size(24.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Delete,
+                    contentDescription = "Delete Todo",
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 }

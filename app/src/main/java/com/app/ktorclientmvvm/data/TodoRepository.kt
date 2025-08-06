@@ -17,4 +17,8 @@ class TodoRepository(
         return apiService.updateTodo(todo)
     }
 
+    suspend fun deleteTodo(todo: Todo): Result<Todo> {
+        return apiService.deleteTodo(todo)
+    }
+
 }

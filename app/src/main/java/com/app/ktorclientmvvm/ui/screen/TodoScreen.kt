@@ -95,6 +95,9 @@ fun TodoScreen(
                             modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                             onToggle = {
                                 viewModel.onToggleCompleted(it , todo)
+                            },
+                            onDelete = {
+                                viewModel.onDeleteTodo(it)
                             }
                         )
                     }

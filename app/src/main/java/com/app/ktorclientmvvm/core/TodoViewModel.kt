@@ -109,4 +109,26 @@ class TodoViewModel : ViewModel() {
             }
         }
     }
+
+    fun onDeleteTodo(todo: Todo) {
+        viewModelScope.launch {
+            val currentTodos = (_uiState.value as TodoScreenUiState.Success).todoList
+            val response = repository.deleteTodo(todo)
+
+            response.onSuccess {
+                updateTodoScreenUiState(
+                    TodoScreenUiState.Success(
+                        todoList = currentTodos.minus(it)
+                    )
+                )
+                showToast("DELETE request Successful")
+            }.onFailure { e->
+                updateTodoScreenUiState(
+                    TodoScreenUiState.Error(
+                        message = e.message ?: "Error"
+                    )
+                )
+            }
+        }
+    }
 }
