@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -62,5 +63,8 @@ dependencies {
 
     //Json
     implementation("io.ktor:ktor-serialization-kotlinx-json:${ktor_version}")
+
+    // Icons Pack
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
 }
